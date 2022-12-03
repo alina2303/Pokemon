@@ -5,12 +5,20 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { CardActions } from '@mui/material';
+import { useNavigate } from 'react-router';
 
 interface IPokemonCardProps{
     pokemon: PokemonSimple
 }
 
 export default function PokemonCard(props: IPokemonCardProps) {
+    const navigate = useNavigate();
+
+    const goToDetails = () => {
+        navigate(
+            `/pokemons/details/${props.pokemon.name}`
+        );
+    }
 
     return (
         <Card sx={{minHeight: '100%'}}>
@@ -46,7 +54,7 @@ export default function PokemonCard(props: IPokemonCardProps) {
             <CardActions>
             <Button
                     variant="outlined"
-                    onClick={() => console.log(props.pokemon.name)}
+                    onClick={() => goToDetails()}
                     fullWidth
                     sx={{marginTop: '1rem'}}
                 >

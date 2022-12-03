@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import PokemonCard from './PokemonCard';
+import { MemoryRouter } from 'react-router';
 
 describe('Pokemon card', () => {
 
@@ -15,7 +16,10 @@ describe('Pokemon card', () => {
         };
     
         const { getByText } = render(
-                <PokemonCard pokemon={pokemon} />);
+            <MemoryRouter>
+                <PokemonCard pokemon={pokemon} />
+            </MemoryRouter>
+        );
     
         const name = getByText(/abra/i);
     
