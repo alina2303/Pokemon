@@ -37,7 +37,7 @@ async function getPokemonDetails(chunks: NamedAPIResource[][], state: ISharedCon
         height: x.height,
         weight: x.weight,
         abilities: x.abilities.map(x => x.ability.name),
-        image: x.sprites.other?.['official-artwork'].front_default ?? ""
+        image: x.sprites.other?.['official-artwork'].front_default ?? ''
       }));
 
       return {allPokemons, pokemonsSimple};
@@ -60,12 +60,12 @@ function mapAbilities(allPokemons: Pokemon[]) {
     return abilityMap;
 }
 
-function mapPokemonIdsToAbilityId(abilities: Map<string, number>, abilityMap: Map<string, number[]>) {
+function mapPokemonIdsToAbilityId(abilities: Map<string, number>, abilityPokemonMap: Map<string, number[]>) {
   let pokemonAbilitiesWithPokemonIds: PokemonAbilitiesPokemon[] = [];
 
       for (const [name, id] of Array.from(abilities)) {
 
-        const pokemonIds = abilityMap.get(name);
+        const pokemonIds = abilityPokemonMap.get(name);
 
         const pokemonAbilities = pokemonIds?.map(x => ({ abilityId: id, pokemonId: x }));
 
@@ -82,7 +82,7 @@ export const ApplicationProvider = ({ children }: PropsWithChildren) => {
 
     const loadData = async () => {
       try {
-        // TODO
+        // Check if the db was initialized and populated with data
         const pokemon = await db.pokemons.limit(1).toArray();
         if (pokemon.length !== 0) {
           return;
@@ -97,7 +97,7 @@ export const ApplicationProvider = ({ children }: PropsWithChildren) => {
 
         // Get data that we use for db and populate pokemons table
         const {allPokemons, pokemonsSimple} = await getPokemonDetails(chunks, state);
-        
+
         await db.pokemons.bulkAdd(pokemonsSimple);
 
         // Map abilities
@@ -107,7 +107,7 @@ export const ApplicationProvider = ({ children }: PropsWithChildren) => {
         await db.abilities.bulkAdd(abilityNames.map(x => ({ name: x } as PokemonAbilities)));
 
         // Map pokemonids to their ability ids 
-        const abilities = new Map<string, number>(await (await db.abilities.toArray()).map(x => [x.name, x.id]));
+        const abilities = new Map<string, number>((await db.abilities.toArray()).map(x => [x.name, x.id]));
         const pokemonAbilitiesWithPokemonIds = mapPokemonIdsToAbilityId(abilities, abilityMap); 
         await db.abilitiesPokemons.bulkAdd(pokemonAbilitiesWithPokemonIds);
 
