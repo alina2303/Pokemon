@@ -1,10 +1,13 @@
 import React from "react";
 import "./App.css";
 import PokemonMain from "./components/PokemonMain";
+import Context from './components/context/Context';
 
 function App() {
   return (
-    <PokemonMain />
+    <Context>
+      <PokemonMain />
+    </Context>
   );
 }
 
