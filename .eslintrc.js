@@ -23,6 +23,12 @@ module.exports = {
         jest: true,
       },
     },
+    {
+      files: ["*.ts", "*.tsx"],
+      rules: {
+          "no-undef": "off"
+      }
+  }
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
