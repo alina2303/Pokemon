@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Pokemons portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a POC of the portal where users are able to search for pokemons. It is completed in respect with given time.
+
+Technology stack: React, TypeScript, Dexie.js - Indexed DB, Material UI, Jest for testing.
+
+Requirements to be able to run the application locally: latest version of Node.js, Chrome, IDE (for example Visual Studio Code)
 
 ## Available Scripts
 
@@ -24,23 +28,38 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Check if database was created
+Having installed the dependencies, initial load will create an indexed database in the browser. To check if the database has been created correctly, open DevTools -> Application -> Storage -> IndexedDB -> pokemonDatabase
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Database
+The database should contain following tables: pokemons, abilities, abilitiesPokemons. This approach has been taken in order to optimize search queries, as given API contains 2 separate endpoints to search for pokemons by name and to search for abilities. This database contains only properties used to display information on cards. The schemas for the tables are defined in the db.ts file. 
 
-### `npm run eject`
+Pros of using Indexed DB: 
+  1. Reduced calls to API
+  2. Possible to sort
+  3. Faster search
+  4. Easy to use
+ 
+ Cons of using Indexed DB:
+ Mapping data from API to database designed schemas
+ 
+## Context
+Context.tsx contains methods to fetch data from the API and populate tables of the indexed database
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Components
+The UI part of the project is using Material UI components. They have modern, airy design and allow to speed development process up.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## TableComponent
+Has following components: search filed, sorting option (items per page and sort by), pagination on the top and bottom of the page and the grid with the pokemon cards.
+Clicking on the “See details” button will redirect to the PokemonDetails component
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Details component
+Contains a pokemon image and detailed information about selected pokemon.
+The initial idea to display all the details was to use a recursive function. But as more different types and properties had to be taken into consideration, the method was getting more complex, thus harder to read and maintain. That is why I opted to simply display properties from the DTO in the render function.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Note: Due to lack of time, displaying some of the properties was not implemented and can be potentially done in V2 of the project.
 
-## Learn More
+## Styles
+The project is using inline styling. My preferable method is using “styled components” but it requires more time.
+Responsiveness of the application is handled using Maretial UI grid.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
