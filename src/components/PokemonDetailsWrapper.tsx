@@ -3,6 +3,7 @@ import { ApplicationContext } from './context/Context';
 import { Pokemon } from 'pokenode-ts';
 import { useMatch } from 'react-router';
 import PokemonDetails from './PokemonDetails';
+import Layout from './layout/Layout';
 
 export default function PokemonDetailsWrapper() {
     const {state} = useContext(ApplicationContext);
@@ -21,5 +22,10 @@ export default function PokemonDetailsWrapper() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <PokemonDetails pokemon={pokemon} />
+    return(
+        <Layout>
+            <PokemonDetails pokemon={pokemon} />
+        </Layout>
+
+    )
 }

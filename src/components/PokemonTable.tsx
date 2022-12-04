@@ -11,6 +11,7 @@ import { itemsPerPageConstant, sortByConstant } from './Constants';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { MySubClassedDexie } from './context/db';
+import Layout from './layout/Layout';
 
 interface PokemonTableProps{
     db: MySubClassedDexie
@@ -93,85 +94,87 @@ export default function PokemonTable({db}: PokemonTableProps) {
     }
 
     return (
-        <Box style={{ margin: 20 }}>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 30
+        <Layout>
+            <Box style={{ margin: 20 }}>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 30
 
-            }}>
-                <SearchInput
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    value={searchInput}
-                    onKeyPress={initialLoad}
-                />
-            </div>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 30,
-                columnGap: 10
+                }}>
+                    <SearchInput
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        value={searchInput}
+                        onKeyPress={initialLoad}
+                    />
+                </div>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 30,
+                    columnGap: 10
 
-            }}>
-                <SelectOption
-                    value={itemsPerPage.toString()}
-                    onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
-                    label="Items per page"
-                    options={itemsPerPageConstant}
-                />
-                <SelectOption
-                    value={sortBy}
-                    onChange={(e) => {
-                        setSortBy(e.target.value);
-                        composeSearchParams(searchInput, e.target.value);
+                }}>
+                    <SelectOption
+                        value={itemsPerPage.toString()}
+                        onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
+                        label="Items per page"
+                        options={itemsPerPageConstant}
+                    />
+                    <SelectOption
+                        value={sortBy}
+                        onChange={(e) => {
+                            setSortBy(e.target.value);
+                            composeSearchParams(searchInput, e.target.value);
+                        }}
+                        label="SortBy"
+                        options={sortByConstant}
+                    />
+                </div>
+                <Pagination
+                    count={count}
+                    size="large"
+                    page={currentPage}
+                    shape="rounded"
+                    onChange={(e, page) => setCurrentPage(page)}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}
-                    label="SortBy"
-                    options={sortByConstant}
                 />
-            </div>
-            <Pagination
-                count={count}
-                size="large"
-                page={currentPage}
-                shape="rounded"
-                onChange={(e, page) => setCurrentPage(page)}
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            />
 
-            <Grid container maxWidth="xl" sx={{ margin: 'auto' }} spacing={2}>
-                {pokemons.map((pokemon, index) =>
-                    <Grid
-                        item
-                        sx={{ paddingRight: '16px' }}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        xl={3}
-                        key={index}>
-                        <PokemonCard
-                            pokemon={pokemon}
-                        />
-                    </Grid>
-                )}
-            </Grid>
-            <Pagination
-                count={count}
-                size="large"
-                page={currentPage}
-                shape="rounded"
-                onChange={(e, page) => setCurrentPage(page)}
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            />
-        </Box>
+                <Grid container maxWidth="xl" sx={{ margin: 'auto' }} spacing={2}>
+                    {pokemons.map((pokemon, index) =>
+                        <Grid
+                            item
+                            sx={{ paddingRight: '16px' }}
+                            xs={12}
+                            sm={6}
+                            md={4}
+                            xl={3}
+                            key={index}>
+                            <PokemonCard
+                                pokemon={pokemon}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
+                <Pagination
+                    count={count}
+                    size="large"
+                    page={currentPage}
+                    shape="rounded"
+                    onChange={(e, page) => setCurrentPage(page)}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                />
+            </Box>
+        </Layout>
     )
 }
