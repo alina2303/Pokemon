@@ -1,9 +1,9 @@
 import React from 'react';
-import { NamedAPIResource, Pokemon, PokemonAbility } from 'pokenode-ts';
-import Typography from '@mui/material/Typography';
+import {  NamedAPIResource, Pokemon, PokemonAbility } from 'pokenode-ts';
 import Box from '@mui/material/Box';
-import { Button, Grid } from '@mui/material';
+import { Card, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 interface PokemonDetailsProps{
     pokemon?: Pokemon
@@ -11,6 +11,8 @@ interface PokemonDetailsProps{
 
 export default function PokemonDetails({pokemon}: PokemonDetailsProps) {
     let navigate = useNavigate();
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up('md'));
 
     const renderListOfAbilities = (abilities: PokemonAbility[]) => {
         return abilities.map((x, index) => (
@@ -37,72 +39,91 @@ export default function PokemonDetails({pokemon}: PokemonDetailsProps) {
     }
 
     return (
+        <Card
+            sx={
+            {
+                display:'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                margin: 'auto',
+                width: matches ? '80%' : '100%',
+                marginTop: matches ? '20px' : 0
+            }}>
+
+       
             <Grid container maxWidth="lg" spacing={2} sx={
                 {
-                    display:'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    margin: 'auto'
                 }}>
-                
-                <Grid 
-                    item   
-                    sx={{ paddingRight: '16px' }}
-                    xs={12}
-                    sm={6}
-                    lg={6}
+                    <Grid 
+                        item   
+                        sx={{ paddingRight: matches ? '16px' : 0 }}
+                        xs={12}
+                        lg={6}
                     >
                     <Box
                         sx={{ 
                             width: '100%',
-                            height: 400,
+                            height: matches ? 600 : 300,
                             backgroundColor: '#ff8080',
                             backgroundImage: `url(${pokemon.sprites.other?.['official-artwork'].front_default})`,
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'cover'
+                            objectFit: 'contain'
                         }}
+                    ></Box>
+                    </Grid>
+                    <Grid 
+                    item 
+                    sx={{width: matches ? 300 : '100%', 
+                        margin: '5px'}}
+                   
                     >
-                    </Box>
-                    <Box>
-                        <Typography variant="body1" color="text.secondary">
-                            {pokemon.name}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Name: {pokemon.name}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Base experience: {pokemon.base_experience}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Height: {pokemon.height}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Is default: {pokemon.is_default.toString()}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Order: {pokemon.order}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Weight: {pokemon.weight}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Abilities:
-                        </Typography>
-                        {renderListOfAbilities(pokemon.abilities)}
-                        <Typography variant="body1" color="text.secondary">
-                            Forms:
-                        </Typography>
-                        {renderListOfForms(pokemon.forms)}
-
-                    </Box>
-                    <Button 
-                    variant="contained"
-                    onClick={() => navigate(-1)}
-                    >
-                        Go back
-                    </Button>
+                        <button className='goBackButton'
+                            onClick={() => navigate(-1)}
+                        >
+                        <Box sx={{
+                             display:'flex', 
+                             alignItems: 'center', 
+                             justifyContent: 'center'
+                        }}>
+                            <ArrowBackIosIcon sx={{width:'12px'}}/>
+                            <Typography>Go to all pokemons</Typography>
+                        </Box>
+                        </button>
+                         <Divider />
+                            <Box sx={
+                                {
+                                    marginTop: '10px',
+                                }}>
+                                <Typography variant="body1" color="text.secondary">
+                                    Name: {pokemon.name}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Base experience: {pokemon.base_experience}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Height: {pokemon.height}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Is default: {pokemon.is_default.toString()}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Order: {pokemon.order}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Weight: {pokemon.weight}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Abilities:
+                                </Typography>
+                                {renderListOfAbilities(pokemon.abilities)}
+                                <Typography variant="body1" color="text.secondary">
+                                    Forms:
+                                </Typography>
+                                {renderListOfForms(pokemon.forms)}
+                            </Box>
+                        </Grid>
                 </Grid>
-            </Grid>
+            </Card>
     )
 }

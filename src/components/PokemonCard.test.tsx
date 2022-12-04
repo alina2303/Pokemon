@@ -19,7 +19,7 @@ describe('Pokemon card', () => {
             <MemoryRouter>
                 <PokemonCard pokemon={pokemon} />
             </MemoryRouter>
-        );
+                );
     
         const name = getByText(/abra/i);
     

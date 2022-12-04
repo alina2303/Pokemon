@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.goBackButton {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #069;
+  cursor: pointer;
+}
